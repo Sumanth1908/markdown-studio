@@ -74,7 +74,7 @@ const Toolbar = ({
       {/* Logo */}
       <LogoArea>
         <LogoIcon>📝</LogoIcon>
-        <LogoText>Markdown Studio</LogoText>
+        <LogoText>MarkDown Studio</LogoText>
       </LogoArea>
 
       {/* Center Controls */}

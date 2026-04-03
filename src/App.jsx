@@ -178,7 +178,7 @@ const App = () => {
         </ToastContainer>
 
         <Footer>
-          <span>Markdown Studio &copy; {new Date().getFullYear()}</span>
+          <span>MarkDown Studio &copy; {new Date().getFullYear()}</span>
           <span>Made with ❤️ using React & Vite</span>
         </Footer>
       </AppShell>
