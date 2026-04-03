@@ -1,6 +1,6 @@
-import { githubTheme } from './github.js';
-import { vscodeTheme } from './vscode.js';
-import { obsidianTheme } from './obsidian.js';
+import { githubTheme } from './github';
+import { vscodeTheme } from './vscode';
+import { obsidianTheme } from './obsidian';
 
 export const themes = {
   github: githubTheme,

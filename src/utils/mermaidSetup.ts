@@ -2,7 +2,7 @@ import mermaid from 'mermaid';
 
 let initialized = false;
 
-export const initMermaid = (isDark) => {
+export const initMermaid = (isDark: boolean) => {
   if (initialized) {
     mermaid.initialize({
       theme: isDark ? 'dark' : 'default',
@@ -21,11 +21,11 @@ export const initMermaid = (isDark) => {
   initialized = true;
 };
 
-export const renderMermaid = async (code, id) => {
+export const renderMermaid = async (code: string, id: string): Promise<string> => {
   try {
     const { svg } = await mermaid.render(id, code);
     return svg;
-  } catch (err) {
+  } catch (err: any) {
     console.error('Mermaid render error:', err);
     throw err;
   }

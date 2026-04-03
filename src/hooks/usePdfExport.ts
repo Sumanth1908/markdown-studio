@@ -1,8 +1,8 @@
-import { useCallback, useRef } from 'react';
+import { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 
 const usePdfExport = () => {
-  const contentRef = useRef(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = useReactToPrint({
     contentRef,

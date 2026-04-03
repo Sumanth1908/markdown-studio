@@ -1,14 +1,14 @@
 import { useState, useCallback } from 'react';
-import { ThemeProvider } from 'styled-components';
-import { GlobalStyles } from './styles/GlobalStyles.js';
-import { themes } from './themes/index.js';
-import Toolbar from './components/Toolbar/Toolbar.jsx';
-import EditorPane from './components/Editor/EditorPane.jsx';
-import PreviewPane from './components/Preview/PreviewPane.jsx';
-import useMarkdown from './hooks/useMarkdown.js';
-import useTheme from './hooks/useTheme.js';
-import useLocalStorage from './hooks/useLocalStorage.js';
-import usePdfExport from './hooks/usePdfExport.js';
+import { ThemeProvider, DefaultTheme } from 'styled-components';
+import { GlobalStyles } from './styles/GlobalStyles';
+import { themes } from './themes/index';
+import Toolbar, { LayoutType } from './components/Toolbar/Toolbar';
+import EditorPane from './components/Editor/EditorPane';
+import PreviewPane from './components/Preview/PreviewPane';
+import useMarkdown from './hooks/useMarkdown';
+import useTheme, { ThemeKey } from './hooks/useTheme';
+import useLocalStorage from './hooks/useLocalStorage';
+import usePdfExport from './hooks/usePdfExport';
 import sampleContent from './assets/sample.md?raw';
 import styled from 'styled-components';
 
@@ -38,7 +38,13 @@ const WorkspaceArea = styled.main`
   }
 `;
 
-const PaneWrapper = styled.div`
+interface PaneWrapperProps {
+  $flex: number;
+  $hidden: boolean;
+  $printHide: boolean;
+}
+
+const PaneWrapper = styled.div<PaneWrapperProps>`
   flex: ${({ $flex }) => $flex};
   min-width: 0;
   min-height: 0;
@@ -100,15 +106,20 @@ const Footer = styled.footer`
   }
 `;
 
-const App = () => {
+interface ToastMessage {
+  id: number;
+  message: string;
+}
+
+const App: React.FC = () => {
   const { activeThemeKey, activeTheme, setTheme } = useTheme('github');
   const [storedContent, setStoredContent] = useLocalStorage('markdown-studio-content', sampleContent);
   const { raw, setRaw, debounced, wordCount, readTime } = useMarkdown(storedContent);
-  const [layout, setLayout] = useState('split');
-  const [toasts, setToasts] = useState([]);
+  const [layout, setLayout] = useState<LayoutType>('split');
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const { contentRef, handlePrint } = usePdfExport();
 
-  const showToast = useCallback((message) => {
+  const showToast = useCallback((message: string) => {
     const id = Date.now();
     setToasts((prev) => [...prev, { id, message }]);
     setTimeout(() => {
@@ -117,7 +128,7 @@ const App = () => {
   }, []);
 
   const handleChange = useCallback(
-    (value) => {
+    (value: string) => {
       setRaw(value);
       setStoredContent(value);
     },
@@ -139,7 +150,7 @@ const App = () => {
   const showPreview = layout === 'split' || layout === 'preview';
 
   return (
-    <ThemeProvider theme={activeTheme}>
+    <ThemeProvider theme={activeTheme as DefaultTheme}>
       <GlobalStyles />
       <AppShell>
         <Toolbar

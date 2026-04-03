@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   ToolbarContainer,
   LogoArea,
@@ -6,11 +7,10 @@ import {
   ToolbarSection,
   Divider,
   ToolbarButton,
-  ThemeButton,
   ExportBtn,
   StatsArea,
   StatBadge,
-} from './Toolbar.styles.js';
+} from './Toolbar.styles';
 
 const IconColumns = () => (
   <svg viewBox="0 0 16 16" fill="currentColor">
@@ -51,17 +51,26 @@ const IconCopy = () => (
   </svg>
 );
 
-
-
 const LAYOUT_OPTIONS = [
   { key: 'split', label: 'Split', Icon: IconColumns },
   { key: 'editor', label: 'Editor', Icon: IconEdit },
   { key: 'preview', label: 'Preview', Icon: IconEye },
-];
+] as const;
 
-const Toolbar = ({
-  activeThemeKey,
-  onThemeChange,
+export type LayoutType = (typeof LAYOUT_OPTIONS)[number]['key'];
+
+interface ToolbarProps {
+  activeThemeKey: string;
+  onThemeChange: (key: string) => void;
+  layout: LayoutType;
+  onLayoutChange: (layout: LayoutType) => void;
+  onExport: () => void;
+  wordCount: number;
+  readTime: number;
+  onCopy: () => void;
+}
+
+const Toolbar: React.FC<ToolbarProps> = ({
   layout,
   onLayoutChange,
   onExport,
@@ -71,17 +80,12 @@ const Toolbar = ({
 }) => {
   return (
     <ToolbarContainer>
-      {/* Logo */}
       <LogoArea>
         <LogoIcon>📝</LogoIcon>
         <LogoText>MarkDown Studio</LogoText>
       </LogoArea>
 
-      {/* Center Controls */}
       <ToolbarSection>
-
-
-        {/* Layout toggle */}
         {LAYOUT_OPTIONS.map(({ key, label, Icon }) => (
           <ToolbarButton
             key={key}
@@ -96,7 +100,6 @@ const Toolbar = ({
         ))}
       </ToolbarSection>
 
-      {/* Right Actions */}
       <ToolbarSection>
         <StatsArea>
           <StatBadge>{wordCount} words</StatBadge>

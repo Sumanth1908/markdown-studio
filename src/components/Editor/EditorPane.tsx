@@ -1,12 +1,12 @@
+import React from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
-import { oneDark } from '@codemirror/theme-one-dark';
 import { EditorView } from '@codemirror/view';
-import { useTheme } from 'styled-components';
-import { EditorWrapper, EditorHeader, EditorDot, CodeMirrorWrapper } from './EditorPane.styles.js';
+import { useTheme, DefaultTheme } from 'styled-components';
+import { EditorWrapper, EditorHeader, EditorDot, CodeMirrorWrapper } from './EditorPane.styles';
 
-const useEditorTheme = (theme) => {
+const useEditorTheme = (theme: DefaultTheme) => {
   return EditorView.theme({
     '&': {
       backgroundColor: 'transparent',
@@ -52,13 +52,18 @@ const useEditorTheme = (theme) => {
   });
 };
 
-const EditorPane = ({ value, onChange }) => {
-  const theme = useTheme();
+interface EditorPaneProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+const EditorPane: React.FC<EditorPaneProps> = ({ value, onChange }) => {
+  const theme = useTheme() as DefaultTheme;
   const editorTheme = useEditorTheme(theme);
 
   const extensions = [
     markdown({
-      base: markdownLanguage,
+      base: markdownLanguage as any,
       codeLanguages: languages,
     }),
     EditorView.lineWrapping,

@@ -1,6 +1,6 @@
 {
   "name": "markdown-studio",
-  "homepage": "https://Sumanth1908.github.io/markdown-studio",
+  "homepage": "https://markdown.iamsquark.com",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -35,13 +35,17 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@types/node": "^25.5.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "@types/styled-components": "^5.1.36",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "typescript": "^6.0.2",
     "vite": "^8.0.1"
   }
 }

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -6,22 +6,29 @@ import remarkBreaks from 'remark-breaks';
 import rehypeKatex from 'rehype-katex';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import 'katex/dist/katex.min.css';
-import MermaidBlock from './renderers/MermaidBlock.jsx';
-import { PreviewContainer, MarkdownBody } from './PreviewPane.styles.js';
-import { initMermaid } from '../../utils/mermaidSetup.js';
-import { useTheme } from 'styled-components';
+import MermaidBlock from './renderers/MermaidBlock';
+import { PreviewContainer, MarkdownBody } from './PreviewPane.styles';
+import { initMermaid } from '../../utils/mermaidSetup';
+import { useTheme, DefaultTheme } from 'styled-components';
 
 const REMARK_PLUGINS = [remarkGfm, remarkMath, remarkBreaks];
-const REHYPE_PLUGINS = [
+const REHYPE_PLUGINS: any[] = [
   rehypeKatex,
   rehypeSlug,
   [rehypeAutolinkHeadings, { behavior: 'wrap' }],
 ];
 
-const CodeBlock = ({ node, inline, className, children, ...props }) => {
+interface CodeBlockProps {
+  node?: any;
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+}
+
+const CodeBlock: React.FC<CodeBlockProps> = ({ node, inline, className, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || '');
   const language = match ? match[1] : '';
   const codeString = String(children).replace(/\n$/, '');
@@ -33,7 +40,7 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
   if (!inline && match) {
     return (
       <SyntaxHighlighter
-        style={github}
+        style={dracula as any}
         language={language}
         PreTag="div"
         {...props}
@@ -50,14 +57,19 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
   );
 };
 
-const PreviewPane = ({ content, printRef }) => {
-  const theme = useTheme();
+interface PreviewPaneProps {
+  content: string;
+  printRef: React.RefObject<HTMLDivElement | null>;
+}
+
+const PreviewPane: React.FC<PreviewPaneProps> = ({ content, printRef }) => {
+  const theme = useTheme() as DefaultTheme;
 
   useEffect(() => {
     initMermaid(theme.isDark);
   }, [theme.isDark]);
 
-  const components = {
+  const components: any = {
     code: CodeBlock,
   };
 
@@ -65,7 +77,7 @@ const PreviewPane = ({ content, printRef }) => {
     <PreviewContainer>
       <MarkdownBody ref={printRef}>
         <ReactMarkdown
-          remarkPlugins={REMARK_PLUGINS}
+          remarkPlugins={REMARK_PLUGINS as any}
           rehypePlugins={REHYPE_PLUGINS}
           components={components}
         >

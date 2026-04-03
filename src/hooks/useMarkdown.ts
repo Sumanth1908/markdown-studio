@@ -2,9 +2,18 @@ import { useState, useEffect } from 'react';
 
 const DEBOUNCE_MS = 250;
 
-const useMarkdown = (initialValue) => {
-  const [raw, setRaw] = useState(initialValue);
-  const [debounced, setDebounced] = useState(initialValue);
+interface UseMarkdownReturn {
+  raw: string;
+  setRaw: (value: string) => void;
+  debounced: string;
+  wordCount: number;
+  charCount: number;
+  readTime: number;
+}
+
+const useMarkdown = (initialValue: string): UseMarkdownReturn => {
+  const [raw, setRaw] = useState<string>(initialValue);
+  const [debounced, setDebounced] = useState<string>(initialValue);
 
   useEffect(() => {
     const timer = setTimeout(() => {

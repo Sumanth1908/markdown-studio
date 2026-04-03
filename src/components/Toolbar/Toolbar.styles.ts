@@ -87,7 +87,7 @@ const buttonBase = css`
   }
 `;
 
-export const ToolbarButton = styled.button`
+export const ToolbarButton = styled.button<{ $active?: boolean }>`
   ${buttonBase}
 
   ${({ $active, theme }) =>
@@ -105,7 +105,7 @@ export const ToolbarButton = styled.button`
     `}
 `;
 
-export const ThemeButton = styled.button`
+export const ThemeButton = styled.button<{ $active?: boolean }>`
   ${buttonBase}
   padding: 0.3rem 0.65rem;
   border-radius: 6px;

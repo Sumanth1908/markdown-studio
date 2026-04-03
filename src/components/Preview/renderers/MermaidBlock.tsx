@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { renderMermaid } from '../../../utils/mermaidSetup.js';
+import { renderMermaid } from '../../../utils/mermaidSetup';
 
 const MermaidWrapper = styled.div`
   display: flex;
@@ -24,10 +24,14 @@ const ErrorBox = styled.pre`
 
 let mermaidCounter = 0;
 
-const MermaidBlock = ({ code }) => {
-  const [svg, setSvg] = useState('');
-  const [error, setError] = useState('');
-  const idRef = useRef(`mermaid-${++mermaidCounter}`);
+interface MermaidBlockProps {
+  code: string;
+}
+
+const MermaidBlock: React.FC<MermaidBlockProps> = ({ code }) => {
+  const [svg, setSvg] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const idRef = useRef<string>(`mermaid-${++mermaidCounter}`);
 
   useEffect(() => {
     let cancelled = false;
