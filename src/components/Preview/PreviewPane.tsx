@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -60,10 +60,28 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ node, inline, className, children
 interface PreviewPaneProps {
   content: string;
   printRef: React.RefObject<HTMLDivElement | null>;
+  scrollRef?: React.RefObject<HTMLDivElement | null>;
+  onScroll?: () => void;
 }
 
-const PreviewPane: React.FC<PreviewPaneProps> = ({ content, printRef }) => {
+const PreviewPane: React.FC<PreviewPaneProps> = ({ content, printRef, scrollRef, onScroll }) => {
   const theme = useTheme() as DefaultTheme;
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Merge the external scroll ref with the container
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || !onScroll) return;
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, [onScroll]);
+
+  // Sync external scrollRef to the same element
+  useEffect(() => {
+    if (scrollRef && containerRef.current) {
+      (scrollRef as React.MutableRefObject<HTMLDivElement | null>).current = containerRef.current;
+    }
+  }, [scrollRef]);
 
   useEffect(() => {
     initMermaid(theme.isDark);
@@ -74,7 +92,7 @@ const PreviewPane: React.FC<PreviewPaneProps> = ({ content, printRef }) => {
   };
 
   return (
-    <PreviewContainer>
+    <PreviewContainer ref={containerRef}>
       <MarkdownBody ref={printRef}>
         <ReactMarkdown
           remarkPlugins={REMARK_PLUGINS as any}

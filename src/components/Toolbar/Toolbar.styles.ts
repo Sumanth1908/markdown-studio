@@ -166,3 +166,62 @@ export const StatBadge = styled.span`
   padding: 0.15rem 0.45rem;
   font-weight: 500;
 `;
+
+/* ─── Export dropdown ─────────────────────────────────────────── */
+
+export const DropdownWrapper = styled.div`
+  position: relative;
+  display: inline-flex;
+`;
+
+export const DropdownMenu = styled.div<{ $open: boolean }>`
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: ${({ theme }) => theme.surface};
+  border: 1px solid ${({ theme }) => theme.border};
+  border-radius: 8px;
+  box-shadow: 0 8px 24px ${({ theme }) => theme.shadow};
+  min-width: 180px;
+  z-index: 100;
+  overflow: hidden;
+  pointer-events: ${({ $open }) => ($open ? 'all' : 'none')};
+  opacity: ${({ $open }) => ($open ? 1 : 0)};
+  transform: ${({ $open }) => ($open ? 'translateY(0)' : 'translateY(-6px)')};
+  transition: opacity 0.15s ease, transform 0.15s ease;
+`;
+
+export const DropdownItem = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: none;
+  color: ${({ theme }) => theme.text};
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.surfaceHover};
+    color: ${({ theme }) => theme.accent};
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+`;
+
+export const DropdownDivider = styled.div`
+  height: 1px;
+  background: ${({ theme }) => theme.border};
+  margin: 0.25rem 0;
+`;

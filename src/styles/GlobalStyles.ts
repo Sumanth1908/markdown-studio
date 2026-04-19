@@ -43,6 +43,11 @@ export const GlobalStyles = createGlobalStyle`
     border-radius: 3px;
   }
 
+  /* Zen mode */
+  body.zen-mode .zen-hidden {
+    display: none !important;
+  }
+
   /* KaTeX font */
   .katex { font-size: 1.05em; }
   .katex-display { overflow-x: auto; padding: 0.5rem 0; }
